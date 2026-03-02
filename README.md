@@ -1,8 +1,14 @@
-# TestAI — Intelligent Test Case Generation for Regulated Software
+<div align="center">
+
+# TestAI 
+
+# Intelligent Test Case Generation for Regulated Software
 
 TestAI is an end-to-end AI platform that converts software requirement documents (PRDs, BRDs, SRS) into
 regulation-aware, traceable test cases. It was built as a submission for the Schneider Hackathon 2026
 (Automating Test Case Generation with AI).
+
+![Test AI](testai.png)
 
 The system targets healthcare and regulated industries where manual test authoring is time-consuming,
 prone to gaps, and must align with frameworks such as GDPR, HIPAA, FDA 21 CFR Part 11, CCPA, and SOC 2.
