@@ -1,0 +1,215 @@
+@use "../../../../../../../app/styles/variables" as *;
+@use "../../../../../../../app/styles/mixins" as *;
+
+.export-test-cases-step {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: $spacing-2xl;
+
+  &__container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__header {
+    margin-bottom: $spacing-xl;
+    display: flex;
+    gap: $spacing-sm;
+    flex-shrink: 0;
+    margin-bottom: $spacing-xl;
+    justify-content: flex-start;
+    &__back-btn {
+      width: 1.75rem;
+      height: 1.75rem;
+      flex-shrink: 0;
+
+      button {
+        @include button-base;
+        background-color: transparent;
+        border: 1px dashed transparent;
+        width: 1.75rem;
+        height: 1.75rem;
+        padding: 0;
+
+        &:hover {
+          svg {
+            color: $color-text;
+          }
+        }
+
+        &:focus {
+          border-color: $color-text-light-shade;
+        }
+
+        svg {
+          width: 1.75rem;
+          height: 1.75rem;
+          color: $color-text-light-shade;
+          transition: color 0.2s ease;
+        }
+      }
+    }
+  }
+
+  &__title {
+    font-size: $font-size-2xl;
+    font-weight: 600;
+    color: $color-text;
+    margin: 0;
+  }
+
+  &__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-xl;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+      gap: $spacing-lg;
+    }
+  }
+
+  &__description {
+    font-size: $font-size-base;
+    color: $color-text-light-shade;
+    margin: 0;
+    text-align: left;
+  }
+
+  &__empty {
+    text-align: center;
+    color: $color-text-light-shade;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-md;
+    max-width: 400px;
+    margin: 0 auto;
+    height: 100%;
+    min-height: 200px;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+  }
+
+  .export-progress {
+    background-color: $color-primary-light-shade;
+    border-radius: $border-radius-lg;
+    padding: $spacing-lg;
+    margin-bottom: $spacing-lg;
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: $spacing-md;
+    }
+
+    &__header h4 {
+      font-size: $font-size-lg;
+      font-weight: 600;
+      color: $color-text;
+      margin: 0;
+    }
+
+    .progress-percentage {
+      font-size: $font-size-lg;
+      font-weight: 600;
+      color: $color-secondary;
+    }
+
+    &__bar {
+      width: 100%;
+      height: 8px;
+      background-color: $color-primary;
+      border-radius: $border-radius-sm;
+      overflow: hidden;
+      margin-bottom: $spacing-sm;
+    }
+
+    &__fill {
+      height: 100%;
+      background: linear-gradient(90deg, $color-secondary, $color-green);
+      border-radius: $border-radius-sm;
+      transition: width 0.3s ease;
+    }
+
+    &__status {
+      font-size: $font-size-sm;
+      color: $color-text-light-shade;
+      margin: 0;
+      text-align: center;
+    }
+  }
+
+  &__footer {
+    margin-top: $spacing-xl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    align-items: center;
+  }
+
+  &__back-btn {
+    @include button-base;
+    background-color: $color-primary-light-shade;
+    color: $color-text;
+    padding: $spacing-sm $spacing-lg;
+    font-size: $font-size-sm;
+  }
+
+  &__continue-btn {
+    @include button-base;
+    background-color: transparent;
+    color: $color-text;
+    padding: $spacing-sm $spacing-lg;
+    font-size: $font-size-sm;
+    border: none;
+    text-decoration: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 1px;
+    }
+
+    // &:focus {
+    //   outline: 2px solid $color-secondary;
+    //   outline-offset: 2px;
+    // }
+  }
+
+  &__export-btn {
+    @include button-base;
+    background-color: $color-secondary;
+    color: $color-text;
+    padding: $spacing-sm $spacing-lg;
+    font-size: $font-size-sm;
+    font-weight: 600;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}

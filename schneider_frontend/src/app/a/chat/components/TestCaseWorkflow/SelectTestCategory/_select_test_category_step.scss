@@ -1,0 +1,299 @@
+@use "../../../../../../app/styles/variables" as *;
+@use "../../../../../../app/styles/mixins" as *;
+
+// Brand gradient used across the app (matches View Test Cases button)
+$brand-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+
+.select-test-category-step {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  justify-content: center;
+  min-height: 100%;
+
+  &__main {
+    width: 100%;
+
+    .test-category-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: $spacing-xl;
+      width: 100%;
+      padding: $spacing-md $spacing-xl;
+
+      @include mobile-only {
+        grid-template-columns: 1fr;
+        gap: $spacing-md;
+        padding: $spacing-sm $spacing-md;
+      }
+
+      @include tablet-up {
+        gap: $spacing-xl;
+        padding: $spacing-md $spacing-xl;
+      }
+
+      @include desktop-up {
+        gap: $spacing-2xl;
+        padding: $spacing-lg $spacing-2xl;
+      }
+    }
+  }
+
+  &__footer {
+    flex-shrink: 0;
+    padding: $spacing-xl $spacing-xl $spacing-md;
+    margin-top: $spacing-md;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    @include mobile-only {
+      padding: $spacing-md $spacing-md $spacing-sm;
+      margin-top: $spacing-sm;
+    }
+  }
+
+  &__export-btn {
+    @include button-base;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: white;
+    padding: 14px 32px;
+    font-size: $font-size-base;
+    font-weight: 600;
+    min-width: 200px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    box-shadow: none;
+
+    @include mobile-only {
+      min-width: 180px;
+      padding: 12px 28px;
+      font-size: $font-size-sm;
+    }
+
+    // Subtle gradient overlay
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.15) 0%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.05) 100%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+      transform: translateY(-2px) scale(1.02);
+
+      &::before {
+        opacity: 1;
+      }
+    }
+
+    &:active {
+      background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+      transform: translateY(-1px) scale(1.01);
+    }
+
+    &:focus {
+      outline: 2px solid #8b5cf6;
+      outline-offset: 2px;
+    }
+  }
+}
+
+// Summary Card Styles
+.summary-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: $border-radius-xl;
+  padding: $spacing-lg;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  height: 100%; // Take full height of container
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; // Prevent overflow from this container
+  margin: 0 $spacing-sm; // keep a small horizontal gap from the column edges
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-lg;
+    padding-bottom: $spacing-md;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: 600;
+    color: $color-text;
+    margin: 0;
+  }
+
+  &__badge {
+    background-image: $brand-gradient;
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: $border-radius-full;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 6px 14px rgba(91, 33, 182, 0.25);
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $spacing-md;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__categories {
+    margin-bottom: $spacing-lg;
+    flex: 1; // Take remaining space
+    overflow-y: auto; // Allow scrolling only for the categories list if needed
+    min-height: 0; // Allow flex shrinking
+  }
+
+  &__footer {
+    flex-shrink: 0;
+    margin-top: $spacing-xl;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__export-btn {
+    @include button-base;
+    background-color: $color-secondary;
+    color: $color-text;
+    padding: $spacing-sm $spacing-lg;
+    font-size: $font-size-base;
+    font-weight: 500;
+    min-width: 180px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    padding-top: $spacing-md;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  &__instruction {
+    font-size: $font-size-sm;
+    color: $color-text-light-shade;
+    margin: 0;
+    text-align: center;
+    font-style: italic;
+  }
+}
+
+.stat-item {
+  text-align: center;
+  padding: $spacing-md;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: $border-radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  &__value {
+    font-size: $font-size-3xl;
+    font-weight: 700;
+    color: $color-text;
+    line-height: 1;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__label {
+    font-size: $font-size-xs;
+    color: $color-text-light-shade;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+  }
+}
+
+.categories-title {
+  font-size: $font-size-base;
+  font-weight: 700;
+  background-image: $brand-gradient;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0 0 $spacing-md 0;
+}
+
+.categories-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.category-summary-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: $border-radius-md;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  &__icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #60a5fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  &__info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__name {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $color-text;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__count {
+    font-size: $font-size-xs;
+    color: $color-text-light-shade;
+  }
+}

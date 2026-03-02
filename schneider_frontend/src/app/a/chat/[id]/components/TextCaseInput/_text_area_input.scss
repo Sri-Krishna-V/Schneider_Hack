@@ -1,0 +1,47 @@
+@use "../../../../../styles/variables" as *;
+@use "../../../../../styles/mixins" as *;
+
+.text-area-input {
+  width: 100%;
+
+  &__textarea {
+    @include input-base;
+    width: 100%;
+    padding: $spacing-sm;
+    min-height: 120px;
+    border-radius: $border-radius-sm;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-size: $font-size-base;
+    line-height: 1.6;
+
+    @include mobile-only {
+      padding: $spacing-sm $spacing-md;
+      font-size: 16px; // Prevent zoom on iOS
+      min-height: 100px;
+      line-height: 1.5;
+    }
+
+    @include tablet-up {
+      // padding: $spacing-sm;
+      font-size: $font-size-base;
+      min-height: 120px;
+      line-height: 1.6;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $color-secondary;
+      box-shadow: 0 0 0 3px rgba($color-secondary, 0.1);
+    }
+
+    &:hover {
+      border-color: rgba($color-secondary, 0.3);
+    }
+
+    &::placeholder {
+      color: $color-text-light-shade;
+      opacity: 0.7;
+    }
+  }
+}

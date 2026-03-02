@@ -1,0 +1,138 @@
+@use "../../../../../../app/styles/variables" as *;
+@use "../../../../../../app/styles/mixins" as *;
+
+.test-cases-container {
+  width: 100%;
+  height: 100%;
+
+  &__container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__header {
+    flex-shrink: 0;
+    margin-bottom: $spacing-lg;
+
+    @include mobile-only {
+      margin-bottom: $spacing-md;
+    }
+  }
+
+  &__main {
+    flex: 1;
+
+    .test-cases-card-container {
+      list-style: none;
+      list-style-position: inside;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+
+      &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-left: $spacing-sm;
+
+        h4 {
+          font-size: $font-size-xs;
+          font-weight: 600;
+          // font-style: italic;
+        }
+      }
+
+      li {
+        width: 100%;
+        // margin-bottom: $spacing-md;
+
+        @include mobile-only {
+          // margin-bottom: $spacing-sm;
+        }
+
+        input[type="radio"] {
+          display: none;
+
+          &:checked + label {
+            border-left-color: $color-secondary;
+            background-color: rgba($color-secondary, 0.05);
+            box-shadow: 0 0 0 1px rgba($color-secondary, 0.2);
+          }
+        }
+
+        label {
+          display: block;
+          // border-radius: $border-radius-lg;
+          cursor: pointer;
+          // border: 1.5px solid $color-primary-light-shade-2;
+          border-bottom: 1.5px solid $color-primary-light-shade-2;
+          border-left: 1.5px solid $color-primary-light-shade-2;
+          transition: all 0.2s ease;
+          outline: none;
+          width: 100%;
+          // min-height: 60px; // Ensure minimum touch target
+
+          @include mobile-only {
+            min-height: 50px;
+            border-radius: $border-radius-md;
+          }
+
+          &:hover {
+            background-color: rgba($color-secondary, 0.05);
+            border-left-color: rgba($color-secondary, 0.3);
+            // transform: translateY(-1px);
+          }
+
+          &:focus {
+            border-left-color: $color-secondary;
+            box-shadow: 0 0 0 2px rgba($color-secondary, 0.2);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+
+          &.test-case-status-exported {
+            cursor: not-allowed;
+            opacity: 0.6;
+            background-color: rgba($color-text-light-shade, 0.05);
+            border-left-color: rgba($color-text-light-shade, 0.3);
+
+            &:hover {
+              background-color: rgba($color-text-light-shade, 0.05);
+              border-left-color: rgba($color-text-light-shade, 0.3);
+              transform: none;
+            }
+
+            &:focus {
+              border-left-color: rgba($color-text-light-shade, 0.3);
+              box-shadow: none;
+            }
+          }
+
+          &.test-case-status-approved {
+            border-bottom-color: transparent;
+            border-left-color: $color-green;
+            background-color: $color-green-light-shade !important;
+          }
+          &.test-case-status-rejected {
+            border-bottom-color: transparent;
+            background-color: $color-red-light-shade !important;
+            border-left-color: $color-red;
+          }
+        }
+      }
+    }
+  }
+
+  &__footer {
+    flex-shrink: 0;
+    margin-top: $spacing-lg;
+
+    @include mobile-only {
+      margin-top: $spacing-md;
+    }
+  }
+}

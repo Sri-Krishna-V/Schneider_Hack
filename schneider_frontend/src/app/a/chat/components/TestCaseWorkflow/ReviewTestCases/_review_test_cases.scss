@@ -1,0 +1,135 @@
+@use "../../../../../../app/styles/variables" as *;
+@use "../../../../../../app/styles/mixins" as *;
+
+.review-test-cases {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  // padding-left: 1rem;
+  // padding-top: 1rem;
+
+  &__container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__header {
+    @include flex-center;
+    gap: $spacing-sm;
+    flex-shrink: 0;
+    margin-bottom: $spacing-sm;
+    justify-content: flex-start;
+
+    &__back-btn {
+      width: 1.75rem;
+      height: 1.75rem;
+      flex-shrink: 0;
+
+      button {
+        @include button-base;
+        background-color: transparent;
+        border: 1px dashed transparent;
+        width: 1.75rem;
+        height: 1.75rem;
+        padding: 0;
+
+        &:hover {
+          svg {
+            color: $color-text;
+          }
+        }
+
+        &:focus {
+          border-color: $color-text-light-shade;
+        }
+
+        svg {
+          width: 1.75rem;
+          height: 1.75rem;
+          color: $color-text-light-shade;
+          transition: color 0.2s ease;
+        }
+      }
+    }
+
+    &__title {
+      font-size: $font-size-2xl;
+      font-weight: 600;
+      color: $color-text;
+      margin: 0;
+
+      @include mobile-only {
+        font-size: $font-size-xl;
+      }
+    }
+  }
+
+  &__main {
+    flex: 1;
+    display: flex;
+    gap: $spacing-lg;
+    align-items: flex-start;
+    overflow: hidden;
+
+    @include mobile-only {
+      flex-direction: column;
+      gap: $spacing-md;
+      align-items: stretch;
+    }
+
+    @include tablet-up {
+      flex-direction: row;
+    }
+
+    &__test-case-container {
+      flex: 6;
+      display: flex;
+      gap: 1rem;
+
+      @include mobile-only {
+        flex-direction: column;
+      }
+      .test-cases-list {
+        flex: 2;
+      }
+      .test-case-container {
+        flex: 3;
+        // max-width: 45rem;
+        text-align: center;
+      }
+    }
+
+    &__pdf-container {
+      flex: 4;
+      height: 800px; // Fixed height
+      width: 100%; // Can be 100% or fixed
+      overflow: auto; // Enable scrolling
+      position: relative;
+    }
+
+    // &__left {
+    //   flex: 1;
+    //   min-width: 0; // Allow flex item to shrink
+
+    //   @include mobile-only {
+    //     order: 2;
+    //   }
+    // }
+
+    // &__right {
+    //   flex: 1;
+    //   min-width: 0; // Allow flex item to shrink
+
+    //   @include mobile-only {
+    //     order: 1;
+    //   }
+    // }
+  }
+
+  &__footer {
+    flex-shrink: 0;
+    margin-top: $spacing-xl;
+  }
+}

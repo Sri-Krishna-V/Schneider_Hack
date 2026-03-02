@@ -1,0 +1,42 @@
+{
+  "name": "hack-2-skill",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@auth/core": "^0.40.0",
+    "@auth/nextjs": "^0.0.0-380f8d56",
+    "@google-ai/generativelanguage": "^3.4.0",
+    "@google-cloud/documentai": "^9.4.0",
+    "@google/genai": "^1.20.0",
+    "@google/generative-ai": "^0.24.1",
+    "multer": "^2.0.2",
+    "next": "15.5.2",
+    "next-auth": "^4.24.11",
+    "posthog-js": "^1.283.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-icons": "^5.5.0",
+    "react-pdf-highlighter-extended": "^8.1.0",
+    "react-toastify": "^11.0.5",
+    "sass": "^1.92.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.2",
+    "typescript": "^5"
+  },
+  "resolutions": {
+    "pdfjs-dist": "4.4.168"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+}

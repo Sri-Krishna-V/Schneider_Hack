@@ -1,0 +1,45 @@
+@use "../../../../../app/styles/variables" as *;
+@use "../../../../../app/styles/mixins" as *;
+
+.test-case-workflow {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  min-height: 100%;
+  display: grid;
+  align-content: center; // vertically center inner sections
+
+  @include tablet-up {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  @include desktop-up {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  &__container {
+    width: 100%;
+    height: 100%;
+    // display: flex;
+    // flex-direction: column;
+  }
+
+  &__header {
+    flex-shrink: 0;
+    // margin-bottom: $spacing-xl;
+  }
+
+  &__main {
+    flex: 1;
+    overflow-y: auto;
+    display: block;
+  }
+
+  &__footer {
+    flex-shrink: 0;
+    margin-top: $spacing-xl;
+  }
+}

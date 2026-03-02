@@ -1,0 +1,296 @@
+@use "../app/styles/variables" as *;
+@use "../app/styles/mixins" as *;
+
+.modal__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(
+    25,
+    26,
+    26,
+    0.85
+  ); // Semi-transparent version of primary color
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 0;
+  animation: modalFadeIn 0.2s ease-out;
+
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+.modal__container {
+  background-color: $color-primary-light-shade;
+  border-radius: 0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  height: 100%;
+  width: 100%;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: flex-start;
+  animation: modalSlideIn 0.3s ease-out;
+  border: 1px solid $color-primary-light-shade-2;
+  overflow: auto;
+
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $color-primary;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-primary-light-shade-2;
+    border-radius: 3px;
+
+    &:hover {
+      background: $color-secondary;
+    }
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+// Brand gradient
+$brand-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 24px 16px 24px;
+  border-bottom: 1px solid $color-primary-light-shade-2;
+  flex-shrink: 0;
+}
+
+.modal__header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  text-align: center;
+}
+
+.modal__title {
+  @include font-nunito;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+  background: $brand-gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.modal__notice {
+  font-size: 0.875rem;
+  color: $color-text-light-shade;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.modal__close-button {
+  background: none;
+  border: none;
+  color: $color-text;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 20px;
+
+  &:hover {
+    background-color: $color-primary-light-shade-2;
+    color: $color-secondary;
+  }
+
+  &:focus {
+    outline: 2px solid $color-secondary;
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.modal__content {
+  // padding: 16px 16px 20px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+
+  // Custom scrollbar styling
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $color-primary;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-primary-light-shade-2;
+    border-radius: 3px;
+
+    &:hover {
+      background: $color-secondary;
+    }
+  }
+}
+
+// Remove padding when rendering the test case workflow
+.modal__content:has(.test-case-workflow) {
+  padding: 0 !important;
+}
+
+// Variant: disable modal content scroll for specific workflows
+// .no-scroll-modal {
+//   // tighter outer padding
+//   padding: $spacing-md;
+//   .modal__container {
+//     // account for backdrop padding
+//     max-height: calc(100vh - 2 * $spacing-md);
+//     height: auto;
+//   }
+//   .modal__content {
+//     overflow: hidden; // The content inside will manage its own scrolling
+//     height: 100%;
+//     display: flex;
+//     flex-direction: column;
+//     // tighter inner padding
+//     padding: $spacing-sm $spacing-md;
+//   }
+// }
+
+// Responsive design - removed padding to maintain full viewport
+
+// .modal__container {
+//   @include mobile-only {
+//     max-width: 100%;
+//     max-height: 95vh;
+//     border-radius: $border-radius-md;
+//   }
+
+//   @include tablet-up {
+//     max-width: 90vw;
+//     max-height: 90vh;
+//     border-radius: $border-radius-lg;
+//   }
+
+// .modal__container {
+//   @include mobile-only {
+//     max-width: 100%;
+//     max-height: 95vh;
+//     border-radius: $border-radius-md;
+//   }
+
+//   @include tablet-up {
+//     max-width: 90vw;
+//     max-height: 90vh;
+//     border-radius: $border-radius-lg;
+//   }
+
+//   @include desktop-up {
+//     max-width: 80vw;
+//     max-height: 80vh;
+//   }
+// }
+
+.modal__header {
+  @include mobile-only {
+    padding: $spacing-md $spacing-md $spacing-sm $spacing-md;
+  }
+
+  @include tablet-up {
+    padding: $spacing-lg $spacing-lg $spacing-md $spacing-lg;
+  }
+}
+
+.modal__notice {
+  @include mobile-only {
+    font-size: $font-size-xs;
+  }
+}
+
+.modal__title {
+  @include mobile-only {
+    font-size: $font-size-xl;
+  }
+
+  @include tablet-up {
+    font-size: 1.5rem; // 24px - slightly bigger
+  }
+}
+
+.modal__content {
+  @include mobile-only {
+    // padding: $spacing-sm;
+  }
+
+  @include tablet-up {
+    // padding: $spacing-md $spacing-lg;
+  }
+}
+
+// Animation for closing (optional enhancement)
+.modal__backdrop.modal__closing {
+  animation: modalFadeOut 0.2s ease-in;
+
+  .modal__container {
+    animation: modalSlideOut 0.2s ease-in;
+  }
+
+  @keyframes modalFadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes modalSlideOut {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+  }
+}

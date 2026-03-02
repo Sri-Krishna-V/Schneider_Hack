@@ -1,0 +1,43 @@
+@use "../../../../../styles/variables" as *;
+@use "../../../../../styles/mixins" as *;
+
+.single-line-input {
+  width: 100%;
+
+  &__input {
+    @include input-base;
+    padding: $spacing-sm;
+    min-height: 44px; // Minimum touch target size
+    font-size: $font-size-base;
+    line-height: 1.5;
+    resize: none;
+    border-radius: $border-radius-sm;
+
+    @include mobile-only {
+      padding: $spacing-sm $spacing-md;
+      font-size: 16px; // Prevent zoom on iOS
+      min-height: 48px; // Larger touch target on mobile
+    }
+
+    @include tablet-up {
+      // padding: $spacing-sm;
+      font-size: $font-size-base;
+      min-height: 44px;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $color-secondary;
+      box-shadow: 0 0 0 3px rgba($color-secondary, 0.1);
+    }
+
+    &:hover {
+      border-color: rgba($color-secondary, 0.3);
+    }
+
+    &::placeholder {
+      color: $color-text-light-shade;
+      opacity: 0.7;
+    }
+  }
+}

@@ -1,0 +1,290 @@
+@use "../../../../../../app/styles/variables" as *;
+@use "../../../../../../app/styles/mixins" as *;
+
+.amend-test-case {
+  margin-top: 1rem;
+  height: 100%;
+  width: 100%;
+
+  &__container {
+    border: 1px solid $color-primary-light-shade-2;
+    height: 100%;
+    background-color: $color-primary-dark-shade;
+    padding: $spacing-sm;
+    border-radius: $border-radius-lg;
+    display: flex;
+    flex-direction: column;
+
+    @include tablet-up {
+      padding: $spacing-md;
+    }
+  }
+
+  &__header {
+    flex-shrink: 0;
+    margin-bottom: $spacing-sm;
+  }
+
+  &__main {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: $spacing-md;
+  }
+
+  &__footer {
+    flex-shrink: 0;
+
+    &__container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $spacing-sm;
+
+      .ai-refinement-btn {
+        text-align: right;
+        button {
+          width: 2.5rem;
+          height: 2.5rem;
+          @include button-base;
+          background-color: transparent;
+          font-size: $font-size-base;
+          // border-radius: $border-radius-full;
+          border: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          padding: 0;
+
+          // Gradient border using pseudo-element
+          &::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: $border-radius-md;
+            background: linear-gradient(
+              180deg,
+              #ff00ff 0%,
+              #ff1493 50%,
+              #8a2be2 100%
+            );
+            z-index: 0;
+          }
+
+          // Inner element to create border effect
+          &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: $border-radius-md;
+            background-color: $color-primary-dark-shade;
+            z-index: 1;
+          }
+
+          i {
+            position: relative;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+
+            svg {
+              display: block;
+              width: 100%;
+              height: 100%;
+              fill: url(#gradient-robot-icon);
+            }
+          }
+          .text {
+            font-size: $font-size-base;
+            color: white;
+          }
+        }
+      }
+    }
+
+    .btn-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      @include mobile-only {
+        flex-direction: column;
+        gap: $spacing-sm;
+      }
+      .action-btns {
+        flex: 1;
+        @include flex-center;
+        gap: $spacing-md;
+        justify-content: flex-end;
+
+        @include mobile-only {
+          flex-direction: column;
+          gap: $spacing-sm;
+        }
+
+        @include tablet-up {
+          flex-direction: row;
+        }
+
+        button {
+          @include button-base;
+          background-color: transparent;
+          padding: $spacing-sm $spacing-md;
+          font-size: $font-size-base;
+          border-radius: $border-radius-md;
+          min-width: 100px;
+
+          @include mobile-only {
+            width: 100%;
+            padding: $spacing-md;
+            font-size: $font-size-lg;
+          }
+
+          &:hover {
+            opacity: 0.8;
+            transform: translateY(-1px);
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
+        }
+
+        .approve-btn {
+          background-color: $color-green-light-shade;
+          color: $color-green;
+          border-color: $color-green;
+
+          &:hover {
+            background-color: $color-green;
+            color: $color-primary;
+          }
+        }
+
+        .reject-btn {
+          background-color: $color-red-light-shade;
+          color: $color-red;
+          border-color: $color-red;
+
+          &:hover {
+            background-color: $color-red;
+            color: $color-primary;
+          }
+        }
+      }
+    }
+  }
+
+  // Readonly styles for exported test cases
+  &__readonly-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-sm;
+    padding: $spacing-sm;
+    background-color: rgba($color-green, 0.1);
+    border: 1px solid rgba($color-green, 0.3);
+    border-radius: $border-radius-md;
+  }
+
+  &__readonly-title {
+    font-size: $font-size-lg;
+    font-weight: 600;
+    color: $color-text;
+    margin: 0;
+    flex: 1;
+  }
+
+  &__exported-badge {
+    font-size: $font-size-sm;
+    color: $color-green;
+    background-color: rgba($color-green, 0.2);
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  &__readonly-content {
+    padding: $spacing-md;
+    background-color: rgba($color-text-light-shade, 0.05);
+    border: 1px solid rgba($color-text-light-shade, 0.2);
+    border-radius: $border-radius-md;
+  }
+
+  &__readonly-text {
+    font-size: $font-size-base;
+    color: $color-text;
+    line-height: 1.5;
+    margin: 0 0 $spacing-md 0;
+  }
+
+  &__readonly-notice {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm;
+    background-color: rgba($color-yellow, 0.1);
+    border: 1px solid rgba($color-yellow, 0.3);
+    border-radius: $border-radius-sm;
+    font-size: $font-size-sm;
+    color: $color-text-light-shade;
+
+    .notice-icon {
+      font-size: $font-size-base;
+    }
+  }
+
+  &__exported-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-md;
+    background-color: rgba($color-green, 0.1);
+    border: 1px solid rgba($color-green, 0.3);
+    border-radius: $border-radius-md;
+
+    .exported-message {
+      font-size: $font-size-sm;
+      color: $color-green;
+      font-weight: 500;
+      text-align: center;
+    }
+  }
+
+  // Compliance tags section
+  &__compliance-tags {
+    margin-bottom: $spacing-md;
+    padding: $spacing-sm 0;
+  }
+
+  &__compliance-title {
+    font-weight: 600;
+    color: $color-text;
+    margin: 0 0 $spacing-sm 0;
+    text-align: left;
+    font-size: 1rem;
+  }
+
+  &__compliance-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+  }
+
+  &__compliance-tag {
+    display: inline-block;
+    padding: $spacing-xs $spacing-sm;
+    border: 2px solid $color-secondary;
+    background-color: #2564ec61;
+    border-radius: $border-radius-lg;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: $color-secondary;
+    color: $color-text;
+    line-height: 1.4;
+  }
+}

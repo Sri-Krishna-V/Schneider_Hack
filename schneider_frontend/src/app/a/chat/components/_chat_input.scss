@@ -1,0 +1,395 @@
+@use "../../../../app/styles/variables" as *;
+@use "../../../../app/styles/mixins" as *;
+
+// Brand gradient (reuse from buttons)
+$brand-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+
+.selected-file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $color-primary-light-shade;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-lg;
+  margin-bottom: $spacing-xs;
+  border: 1px solid $color-primary-light-shade-2;
+
+  .file-name {
+    font-size: $font-size-sm;
+    color: $color-text;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+  }
+
+  .remove-file {
+    background: none;
+    border: none;
+    color: $color-red;
+    cursor: pointer;
+    font-size: $font-size-sm;
+    padding: $spacing-xs;
+    border-radius: 50%;
+    
+    &:hover {
+      background-color: rgba($color-red, 0.1);
+    }
+  }
+}
+
+.processing-indicator {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-size: $font-size-sm;
+  color: $color-text-light-shade;
+  
+  span {
+    animation: pulse 2s infinite;
+  }
+}
+
+.gdpr-toggle {
+  display: flex;
+  align-items: center;
+  margin-right: $spacing-sm;
+
+  &__label {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    cursor: pointer;
+    user-select: none;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-full;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+  }
+
+  &__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:checked + .gdpr-toggle__switch {
+      background: $brand-gradient;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+
+      .gdpr-toggle__slider {
+        transform: translateX(20px);
+        background: #fff;
+      }
+    }
+
+    &:checked ~ .gdpr-toggle__text {
+      color: #fff;
+
+      .gdpr-toggle__icon {
+        filter: brightness(1.2);
+      }
+    }
+  }
+
+  &__switch {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 22px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: $border-radius-full;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+  }
+
+  &__slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  &__text {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    font-size: $font-size-xs;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.3s ease;
+  }
+
+  &__icon {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+    display: block;
+    transition: filter 0.3s ease;
+  }
+
+  &__label-text {
+    line-height: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat__input {
+  position: relative;
+
+  &__container {
+    display: flex;
+    align-items: center;
+    background-color: $color-primary-dark-shade;
+    padding: $spacing-sm;
+    border-radius: $border-radius-2xl;
+    border: 1.5px solid $color-primary-light-shade;
+    gap: $spacing-sm;
+    transition: all 0.3s ease;
+
+    &:focus-within {
+      border-color: $color-primary-light-shade-2;
+    }
+
+    // GDPR active highlight - Commented out, not used anymore
+    // &.gdpr-active {
+    //   border: 2px solid #8b5cf6;
+    //   box-shadow:
+    //     0 0 0 3px rgba(139, 92, 246, 0.15),
+    //     0 0 20px rgba(139, 92, 246, 0.2),
+    //     inset 0 1px 0 rgba(139, 92, 246, 0.1);
+    //   background: linear-gradient(
+    //     to bottom,
+    //     $color-primary-dark-shade,
+    //     rgba(139, 92, 246, 0.03) 100%
+    //   );
+
+    //   &:focus-within {
+    //     border-color: #8b5cf6;
+    //     box-shadow:
+    //       0 0 0 4px rgba(139, 92, 246, 0.2),
+    //       0 0 28px rgba(139, 92, 246, 0.3),
+    //       inset 0 1px 0 rgba(139, 92, 246, 0.15);
+    //   }
+    // }
+
+    .prefix {
+      flex-shrink: 0;
+
+      .attachment-icon {
+        @include button-base;
+        background: rgba(255,255,255,0.06);
+        color: #fff;
+        padding: $spacing-sm;
+        border-radius: $border-radius-full;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 6px 16px rgba(91,33,182,0.25);
+
+        &:hover {
+          background-image: $brand-gradient;
+          color: #fff;
+        }
+
+        svg {
+          width: 24px;
+          height: 24px;
+          fill: currentColor;
+        }
+      }
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+
+      .drag-drop-area {
+        position: relative;
+        border: 2px dashed transparent;
+        border-radius: $border-radius-lg;
+        transition: all 0.2s ease;
+
+        &.drag-over {
+          background-color: rgba($color-primary-light-shade, 0.15);
+          border-color: $color-secondary;
+          box-shadow: 0 0 0 3px rgba($color-secondary, 0.15);
+
+          &::after {
+            content: "Drop your PRD file here";
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            color: $color-text-light-shade;
+            font-size: $font-size-sm;
+            pointer-events: none;
+          }
+        }
+      }
+
+      .input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        width: 100%;
+      }
+
+      .selected-file {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background-color: $color-primary-light-shade;
+        padding: 6px 10px;
+        border-radius: $border-radius-md;
+        border: 1px solid $color-primary-light-shade-2;
+        font-size: $font-size-xs;
+        max-width: 200px;
+        overflow: hidden;
+        flex-shrink: 0;
+        white-space: nowrap;
+
+        .file-icon {
+          width: 14px;
+          height: 14px;
+          color: rgba(139, 92, 246, 0.9);
+          flex-shrink: 0;
+        }
+
+        span {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          color: $color-text;
+          flex: 1;
+          min-width: 0;
+        }
+
+        .remove-file {
+          @include button-base;
+          color: $color-red;
+          font-size: 14px;
+          font-weight: bold;
+          padding: 0;
+          border-radius: 50%;
+          line-height: 1;
+          width: 16px;
+          height: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          &:hover {
+            background-color: rgba($color-red, 0.1);
+          }
+        }
+      }
+
+      .chat-input__textarea {
+        @include input-base;
+        flex: 1;
+        background-color: transparent;
+        font-size: $font-size-base;
+        line-height: 1.5;
+        min-height: 24px;
+        max-height: 200px;
+        resize: none;
+        border: none;
+        padding: 6px 0;
+        min-width: 0;
+
+        &::placeholder {
+          color: $color-text-light-shade;
+        }
+      }
+    }
+    
+    .suffix {
+      display: flex;
+      align-items: center;
+      gap: $spacing-xs;
+      flex-shrink: 0;
+
+      .send-button {
+        @include button-base;
+        width: 56px;
+        height: 56px;
+        border-radius: $border-radius-full;
+        background-image: $brand-gradient;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        flex-shrink: 0;
+        box-shadow: 0 6px 16px rgba(91, 33, 182, 0.25);
+
+        svg {
+          width: 26px;
+          height: 26px;
+        }
+
+        &:hover {
+          transform: scale(1.05);
+          box-shadow: 0 8px 20px rgba(91, 33, 182, 0.35);
+        }
+
+        &:disabled {
+          background-color: $color-primary-light-shade;
+          background-image: none;
+          color: $color-primary-light-shade-2;
+          cursor: not-allowed;
+          transform: none;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+
+  .gdpr-info {
+    position: absolute;
+    bottom: -24px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    animation: fadeInDown 0.3s ease-out;
+    pointer-events: none;
+
+    span {
+      font-size: $font-size-xs;
+      color: rgba(139, 92, 246, 0.8);
+      line-height: 1.4;
+    }
+  }
+}
