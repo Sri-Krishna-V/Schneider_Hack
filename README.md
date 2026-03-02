@@ -165,7 +165,9 @@ sequenceDiagram
     U->>FE: Export to Jira
     FE-->>U: Issues created in selected project
 ```
+</div>
 
+<div>
 ---
 
 ## Repository Structure
@@ -264,6 +266,8 @@ yarn install
 yarn dev
 # Application available at http://localhost:3000
 ```
+
+</div>
 
 ---
 
