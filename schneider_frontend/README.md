@@ -1,202 +1,214 @@
-# TestAI — AI Powered Test Case Generator
+# TestAI Frontend — AI-Powered Test Case Generation Interface
 
-**Hackathon Submission** for the Gen AI Exchange Hackathon by [Hack-2-Skills](https://vision.hack2skill.com/event/genaiexchangehackathon) \
- [Live demo](https://test-ai-gcp.vercel.app/) | [Video demo](https://youtu.be/NofZPOIaCEw) | [AI backend Repository](https://github.com/rajrawat37/gemini-traceability-microservice)
- 
-## Problem Statement
-#### Automating Test Case Generation with AI (Professional Track):
-Develop an AI-powered system that automatically converts healthcare software requirements into compliant, traceable test cases integrated with enterprise toolchains.
+A Next.js 15 application that provides an authenticated, chat-driven interface for uploading requirement
+documents, generating AI-powered test cases via the TestAI backend, and exporting them directly to Jira.
 
-## Tech Stack
+Live demo: https://test-ai-gcp.vercel.app  
+Video demo: https://youtu.be/NofZPOIaCEw
 
-- Next.js 15
-- NextAuth (Google provider)
-- Google Cloud Document AI
-- Gemini / Vertex AI (via REST + google-auth)
-- Sass for UI development
+---
 
-## Current available Features
+## Overview
 
-- **Google Authentication** - Secure login using NextAuth.js
-- **Document Processing** - Extract text from only PDF files using Google Document AI
-- **AI Test Generation** - Generate comprehensive test cases using Google Gemini AI
-- **Jira Integration (ALM tool)** - Export test cases directly to Jira projects with issue type selection
-- **Streamlined Workflow** - Simple 3-step process from document to test cases
+The frontend orchestrates the end-user experience across three primary workflows:
 
-## Current Architecture
+1. **Authentication** — Google OAuth via NextAuth.js protects all application routes.
+2. **Document processing** — Users upload a PDF; the app routes it through Document AI and the AI backend pipeline.
+3. **Export** — Generated test cases can be pushed to a Jira project with configurable issue types.
 
-![System Architecture Diagram](./current-architecture-diagram.png)
+---
 
-## Features to be implemented
+## Application Flow
 
-- **Named Entity Recognition (NER)** - Detect key entities like user roles, actions, and regulatory standards.
-- **Embeddings + RAG** - Capture deeper context and relationships within documents.
-- **Knowledge Graph** - Represent entities and relationships in a Neo4j knowledge graph for querying, traceability, and compliance.
-- **Vertex AI Agent Builder** - Orchestrates the full pipeline from ingestion and parsing to test case generation and storage.
-- **Gemini Integration** - Uses the knowledge graph and context to generate accurate, regulation-aware test cases.
-- **BigQuery Integration** - Enables auditing of test cases.
+```mermaid
+flowchart TD
+    LOGIN(["User visits app"])
+    AUTH["Google OAuth\nvia NextAuth.js"]
+    CHAT["Chat Interface\n/a/chat"]
+    UPLOAD["Upload PDF Document"]
+    DOCAI["Document AI API Route\n/api/document-ai"]
+    GEMINI["Gemini API Route\n/api/gemini/generate-test-cases"]
+    REVIEW["Review Generated\nTest Cases"]
+    SELECT["Select Export Tool\n(Jira)"]
+    CONNECT["Connect Jira\n(OAuth 2.0)"]
+    PROJECT["Select Jira Project\n& Issue Type"]
+    EXPORT["Export to Jira\n/api/jira/"]
+    SUCCESS["Export Complete"]
 
-## Expected Architecture
+    LOGIN --> AUTH --> CHAT
+    CHAT --> UPLOAD --> DOCAI --> GEMINI --> REVIEW
+    REVIEW --> SELECT --> CONNECT --> PROJECT --> EXPORT --> SUCCESS
 
-![System Architecture Diagram](./final-architecture-diagram.png)
+    classDef page   fill:#0055CC,stroke:#003d99,color:#fff
+    classDef api    fill:#00695C,stroke:#004D40,color:#fff
+    classDef action fill:#4A148C,stroke:#311B92,color:#fff
+    classDef term   fill:#E65100,stroke:#BF360C,color:#fff
 
+    class CHAT,REVIEW page
+    class DOCAI,GEMINI,EXPORT api
+    class UPLOAD,SELECT,CONNECT,PROJECT action
+    class LOGIN,AUTH,SUCCESS term
+```
 
-## Wireframe Diagram
+---
 
-## <img width="3456" height="2008" alt="image" src="https://github.com/user-attachments/assets/dc75d21b-0a51-4f88-8a69-d44578d69007" />
+## Component Architecture
 
-## <img width="3456" height="1956" alt="image" src="https://github.com/user-attachments/assets/2ac9cca9-b133-452e-987b-4c6260fc91f4" />
+```mermaid
+graph TD
+    LAYOUT["layout.tsx\nRoot layout + providers"]
+    LAYOUT --> PROV["Provider.tsx\nNextAuth + PostHog"]
+    LAYOUT --> CHAT_PAGE
 
-<img width="3454" height="1960" alt="image" src="https://github.com/user-attachments/assets/97d94afb-1418-4232-b273-7120e24e2ae4" />
+    subgraph PAGES["Pages"]
+        LOGIN_PAGE["login/page.tsx"]
+        CHAT_PAGE["a/chat/page.tsx"]
+        CONNECT_PAGE["a/connect/jira/page.tsx"]
+    end
+
+    CHAT_PAGE --> TOPBAR["TopBar"]
+    CHAT_PAGE --> SMOOTH["SmoothChatLayout"]
+
+    subgraph WORKFLOW["TestCaseWorkflow (inside chat)"]
+        STEP1["SelectTestCategory"]
+        STEP2["ReviewTestCases"]
+        STEP3["SelectExportToolStep"]
+        STEP4["ConnectJiraStep"]
+        STEP5["SelectJiraProjectStep"]
+        STEP6["ExportTestCasesStep"]
+        STEP7["ExportSuccessStep"]
+        STEP1 --> STEP2 --> STEP3 --> STEP4 --> STEP5 --> STEP6 --> STEP7
+    end
+
+    SMOOTH --> WORKFLOW
+
+    classDef page fill:#0055CC,stroke:#003d99,color:#fff
+    classDef comp fill:#1565C0,stroke:#0D47A1,color:#fff
+    classDef step fill:#00695C,stroke:#004D40,color:#fff
+
+    class LOGIN_PAGE,CHAT_PAGE,CONNECT_PAGE page
+    class TOPBAR,SMOOTH,PROV,LAYOUT comp
+    class STEP1,STEP2,STEP3,STEP4,STEP5,STEP6,STEP7 step
+```
 
 
 ## Project Structure
 
 ```
-src/
-  app/
-    login/                 # Sign-in page
-    a/                     # Authenticated area
-      chat/                # Chat interface
-        [id]/              # Dynamic chat pages
-        components/        # Chat UI components
-          TestCaseWorkflow/ # Test case generation workflow
-            SelectTestCategory/    # Category selection
-            ReviewTestCases/       # Test case review
-            ExportTestCases/       # Export workflow
-              SelectExportToolStep/    # Tool selection
-              ConnectJiraStep/         # Jira connection
-              SelectJiraProjectStep/    # Project & issue type selection
-              ExportTestCasesStep/      # Export execution
-              ExportSuccessStep/       # Success confirmation
-        context/           # Chat state management
-        styles/            # Chat-specific styles
-      connect/jira/        # Jira connection page
-    api/
-      auth/[...nextauth]/  # NextAuth handler
-      document-ai/         # Document AI processing
-      gemini/generate-test-cases/  # AI test case generation
-      jira/                # Jira integration APIs
-        issue/             # Issue management
-        callback/          # OAuth callback
-        connect-jira/      # Jira connection
-        get-projects/      # Project listing
-        get-access-token/  # Token management
-      proxy-image/         # Image proxy for avatars
-    middleware.ts          # Route protection
-  components/              # Shared components
-    ReactToastify/         # Toast notifications
-    Modal.tsx              # Modal component
-    Provider.tsx           # App providers
-    SignIn.tsx             # Sign-in component
-  assets/                  # Static assets (logos)
-  utils/                   # Utility functions
-    documentAIClient.ts    # Document AI client
-    geminiAuth.ts          # Gemini authentication
-    generateUniqueId.ts    # ID generation
+schneider_frontend/
+└── src/
+    ├── app/
+    │   ├── layout.tsx                      # Root layout, global providers
+    │   ├── page.tsx                        # Landing page
+    │   ├── middleware.ts                   # Route protection (NextAuth)
+    │   ├── login/page.tsx                  # Sign-in page
+    │   ├── a/
+    │   │   ├── chat/                       # Primary chat interface
+    │   │   │   ├── page.tsx
+    │   │   │   ├── layout.tsx
+    │   │   │   ├── [id]/                   # Dynamic session pages
+    │   │   │   ├── context/                # Chat state context
+    │   │   │   └── components/
+    │   │   │       └── TestCaseWorkflow/   # Multi-step export workflow
+    │   │   │           ├── SelectTestCategory/
+    │   │   │           ├── ReviewTestCases/
+    │   │   │           └── ExportTestCases/
+    │   │   │               ├── SelectExportToolStep/
+    │   │   │               ├── ConnectJiraStep/
+    │   │   │               ├── SelectJiraProjectStep/
+    │   │   │               ├── ExportTestCasesStep/
+    │   │   │               └── ExportSuccessStep/
+    │   │   └── connect/jira/           # Jira OAuth connection page
+    │   └── api/
+    │       ├── auth/[...nextauth]/     # NextAuth route handler
+    │       ├── document-ai/route.ts    # Document AI proxy
+    │       ├── gemini/
+    │       │   └── generate-test-cases/   # Gemini test generation
+    │       ├── generate-ui-tests/route.ts  # Backend pipeline proxy
+    │       ├── jira/
+    │       │   ├── callback/              # OAuth 2.0 callback
+    │       │   ├── connect-jira/          # Initiate OAuth flow
+    │       │   ├── get-projects/          # List Jira projects
+    │       │   ├── get-access-token/      # Token exchange
+    │       │   ├── issue/                 # Create Jira issues
+    │       │   └── utils.ts               # Shared Jira helpers
+    │       └── proxy-image/route.ts    # Avatar image proxy
+    ├── components/
+    │   ├── Modal.tsx
+    │   ├── Tooltip.tsx
+    │   ├── Provider.tsx             # Auth + analytics providers
+    │   ├── SignIn.tsx
+    │   ├── ErrorDisplay/
+    │   ├── GlobalErrorBoundary/
+    │   └── PdfModule/               # PDF viewer with highlights
+    ├── hooks/
+    │   └── useReloadWarning.ts      # Warn on unsaved navigation
+    ├── types/
+    │   ├── generate-ui-tests.ts
+    │   ├── next-auth.d.ts
+    │   └── vertex-agent-response.ts
+    └── utils/
+        ├── documentAIClient.ts      # Google Cloud Document AI client
+        ├── geminiAuth.ts            # Vertex AI authentication helper
+        ├── generateUniqueId.ts      # Unique ID generation
+        └── generateGuestId.ts
 ```
 
-## Data flow diagram
+---
 
-```mermaid
-sequenceDiagram
-  autonumber
-  participant U as User
-  participant FE as Next.js Frontend
-  participant AB as Next.js API (Orchestrator)
-  participant P as Document AI (Parser)
-  participant N as NER Tool
-  participant VS as Vector Store (Embeddings/RAG)
-  participant KG as Knowledge Graph
-  participant L as LLM (Gemini)
-  participant BQ as BigQuery
-  participant J as JIRA
+## Technology Stack
 
-  U ->> FE: Sign in (NextAuth)
+| Technology | Version | Purpose |
+|---|---|---|
+| Next.js | 15.x | Full-stack React framework (App Router) |
+| React | 19.x | UI rendering |
+| TypeScript | 5.x | Type safety across frontend and API routes |
+| NextAuth.js | 4.x | Google OAuth session management |
+| Sass | 1.x | Component and layout styling |
+| Google Cloud Document AI | `@google-cloud/documentai` 9.x | Server-side PDF extraction |
+| Gemini / Vertex AI | `@google/genai` | Test case generation |
+| react-pdf-highlighter-extended | 8.x | In-browser PDF viewer with highlights |
+| PostHog | 1.x | Product analytics |
+| react-toastify | 11.x | Toast notifications |
 
-  U ->> FE: Upload document
-  FE ->> AB: Upload and start processing
-
-  AB ->> P: Parse document
-  P -->> AB: Structured chunks
-
-  AB ->> N: Extract entities
-  N -->> AB: Entities
-
-  AB ->> VS: Embed chunks and upsert
-  AB ->> KG: Upsert entities/relations
-
-  U ->> FE: Ask question / Generate tests
-  FE ->> AB: Query / Generate
-
-  AB ->> VS: Retrieve relevant context
-  VS -->> AB: Relevant chunks
-
-  AB ->> L: Generate test cases + traceability
-  L -->> AB: Test cases
-
-  AB ->> BQ: Persist results (audit/analytics)
-  AB -->> FE: Status updates
-  FE -->> U: Display results
-
-  U ->> FE: Export to JIRA
-  FE ->> AB: Export test cases
-  AB ->> J: Create issues
-  J -->> AB: Issue keys
-  AB -->> FE: Export success
-```
+---
 
 ## Prerequisites
 
-- **Node.js 18+**
-- **Google Cloud Project** with:
-  - Document AI API enabled and a Processor created
-  - Vertex AI API enabled
-  - Service Account with Document AI and Vertex AI roles
-  - Google Cloud credentials (JSON key file or environment variables)
-- **Google OAuth** credentials for NextAuth authentication
-- **Jira Cloud** account with:
-  - OAuth 2.0 app created in Atlassian Developer Console
-  - Client ID and Secret for Jira integration
-  - Redirect URI configured for OAuth flow
-- **Environment Variables**:
-  - `GOOGLE_CLIENT_ID` & `GOOGLE_CLIENT_SECRET` (OAuth)
-  - `GOOGLE_APPLICATION_CREDENTIALS` or `GOOGLE_APPLICATION_CREDENTIALS_JSON`
-  - `GOOGLE_CLOUD_PROJECT_ID` & `GOOGLE_CLOUD_LOCATION`
-  - `GEMINI_MODEL` (e.g., "gemini-1.5-pro")
-  - `JIRA_CLIENT_ID`, `JIRA_CLIENT_SECRET`, `JIRA_REDIRECT_URI`
-  - `JIRA_CLIENT_URL` (Atlassian Cloud URL)
-  - `VERTEX_AGENT_API_URL` (Vertex Agent API endpoint)
-  - `NEXTAUTH_SECRET` (NextAuth session secret)
+- Node.js 18 or later
+- A Google Cloud project with Document AI and Vertex AI APIs enabled
+- A Google OAuth 2.0 client (for NextAuth)
+- A Jira Cloud account with an OAuth 2.0 app registered in the Atlassian Developer Console
+
+---
 
 ## Environment Variables
 
-Use the following values:
+Create a `.env.local` file in the `schneider_frontend/` directory:
 
 ```bash
 # NextAuth
 NEXTAUTH_SECRET=your_random_secret
+NEXTAUTH_URL=http://localhost:3000
 GOOGLE_CLIENT_ID=your_google_oauth_client_id
 GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
 
-# Google Cloud auth
-# Use ONE of the following three for Google credentials
-# 1) Local file path (best for local dev)
-GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/key.json
-# 2) Raw JSON (paste the full service account JSON)
-# GOOGLE_APPLICATION_CREDENTIALS_JSON={"type":"service_account",...}
-# 3) Base64-encoded JSON (useful for CI)
-# GOOGLE_APPLICATION_CREDENTIALS_BASE64=eyJ0eXBlIjoic2VydmljZV9hY2NvdW50Ii4uLg==
+# Google Cloud credentials
+# Provide exactly ONE of the three options below:
+GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/to/service-account-key.json
+# or: GOOGLE_APPLICATION_CREDENTIALS_JSON={"type":"service_account",...}
+# or: GOOGLE_APPLICATION_CREDENTIALS_BASE64=<base64-encoded JSON>
+
 GOOGLE_CLOUD_PROJECT_ID=your_gcp_project_id
+GOOGLE_CLOUD_LOCATION=us-central1
 
 # Document AI
 DOCUMENT_AI_PROJECT_ID=your_gcp_project_id
 DOCUMENT_AI_LOCATION=us
 DOCUMENT_AI_PROCESSOR_ID=your_processor_id
 
-# Gemini / Vertex AI
-GOOGLE_CLOUD_LOCATION=us-central1
-GEMINI_MODEL=gemini-1.5-pro
+# Gemini
+GEMINI_MODEL=gemini-2.0-flash-001
 
 # Jira Integration
 JIRA_CLIENT_ID=your_jira_oauth_client_id
@@ -204,34 +216,37 @@ JIRA_CLIENT_SECRET=your_jira_oauth_client_secret
 JIRA_REDIRECT_URI=http://localhost:3000/api/jira/callback
 JIRA_CLIENT_URL=https://your-domain.atlassian.net
 
-# Vertex Agent API
+# Backend API
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
 VERTEX_AGENT_API_URL=https://vertex-agent-api-lhvgyyfwuq-uc.a.run.app
-
-# Development
-NEXT_PUBLIC_LIVE=false
 ```
 
-Notes:
-- Provide credentials via ONE of `GOOGLE_APPLICATION_CREDENTIALS`, `GOOGLE_APPLICATION_CREDENTIALS_JSON`, or `GOOGLE_APPLICATION_CREDENTIALS_BASE64`.
-- If using a file path, it must be absolute (e.g., `/var/task/key.json`).
-- For `GEMINI_MODEL`, any available Vertex model name is supported.
+---
 
-## Setup
+## Local Development
 
 ```bash
-# Install deps
+# Install dependencies
 yarn install
 
-# Dev server
+# Start the development server
 yarn dev
+# Application available at http://localhost:3000
 
-# Build & start
+# Build for production
 yarn build
 yarn start
 ```
 
-Open `http://localhost:3000`.
+---
+
+## Route Protection
+
+All routes under `/a/*` are protected by NextAuth session middleware defined in [src/middleware.ts](src/middleware.ts).
+Unauthenticated requests are redirected to `/login`.
+
+---
 
 ## License
 
-Proprietary – for hackathon use only.
+This project was developed as a hackathon submission. All rights reserved by the contributors.
